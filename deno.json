@@ -3,7 +3,7 @@
   "version": "2.0.8",
   "imports": {
     "@/": "./src/",
-    "@hazae41/tscousin": "jsr:@hazae41/tscousin@^1.0.11"
+    "@hazae41/tscousin": "jsr:@hazae41/tscousin@^1.0.28"
   },
   "exports": {
     ".": "./src/mod.ts",
