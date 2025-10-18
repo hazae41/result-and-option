@@ -7,9 +7,9 @@
   "author": "hazae41",
   "scripts": {
     "examine": "deno lint ./src && deno check ./src && deno test ./src",
-    "prepare": "rm -rf ./out && tsc && tscousin",
-    "version": "deno -RW ./!vsync.ts && git add deno.json",
-    "synchro": "deno -RW ./!dsync.ts && deno install"
+    "version": "deno -RW ./x.vsync.ts && git add deno.json",
+    "prepare": "deno -RW ./x.dsync.ts && deno install",
+    "prepack": "rm -rf ./out && tsc && tscousin"
   },
   "files": [
     "./out"
@@ -21,7 +21,7 @@
     }
   },
   "devDependencies": {
-    "@hazae41/tscousin": "^1.0.11",
-    "typescript": "^5.9.2"
+    "@hazae41/tscousin": "^1.0.28",
+    "typescript": "^5.9.3"
   }
 }

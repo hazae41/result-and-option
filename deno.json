@@ -16,5 +16,6 @@
         "no-namespace"
       ]
     }
-  }
+  },
+  "compilerOptions": {}
 }
