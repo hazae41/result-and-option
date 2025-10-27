@@ -3,9 +3,9 @@ import { None, Some } from "@/mods/option/mod.ts"
 
 export namespace Err {
 
-  export type Infer<T> = Err<Inner<T>>
+  export type Infer<S, E = unknown> = Err<E & Err.Inner<S>>
 
-  export type Inner<T> = T extends Err<infer Inner> ? Inner : never
+  export type Inner<S> = S extends Err<infer E> ? E : never
 
 }
 

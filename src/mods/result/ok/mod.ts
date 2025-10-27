@@ -3,9 +3,9 @@ import { None, Some } from "@/mods/option/mod.ts";
 
 export namespace Ok {
 
-  export type Infer<T> = Ok<Inner<T>>
+  export type Infer<S, T = unknown> = Ok<T & Ok.Inner<S>>
 
-  export type Inner<T> = T extends Ok<infer Inner> ? Inner : never
+  export type Inner<S> = S extends Ok<infer T> ? T : never
 
 }
 

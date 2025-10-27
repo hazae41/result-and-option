@@ -23,9 +23,9 @@ export type Fallback<T> = Result<T, T>
 
 export namespace Result {
 
-  export type Infer<T> =
-    | Ok.Infer<T>
-    | Err.Infer<T>
+  export type Infer<S, T = unknown, E = unknown> =
+    | Ok.Infer<S, T>
+    | Err.Infer<S, E>
 
   /**
    * Create a Result from a maybe Error value
