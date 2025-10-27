@@ -3,8 +3,14 @@ import { None, Some } from "@/mods/option/mod.ts";
 
 export namespace Ok {
 
+  /**
+   * Force inference of Ok and its generic type
+   */
   export type Infer<S, T = unknown> = Ok<T & Ok.Inner<S>>
 
+  /**
+   * Get the inner type of an Ok
+   */
   export type Inner<S> = S extends Ok<infer T> ? T : never
 
 }

@@ -3,8 +3,14 @@ import { None, Some } from "@/mods/option/mod.ts"
 
 export namespace Err {
 
+  /**
+   * Force inference of Err and its generic type
+   */
   export type Infer<S, E = unknown> = Err<E & Err.Inner<S>>
 
+  /**
+   * Get the inner type of an Err
+   */
   export type Inner<S> = S extends Err<infer E> ? E : never
 
 }
