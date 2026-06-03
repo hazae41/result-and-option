@@ -50,11 +50,11 @@ export namespace Result {
   }
 
   /**
-   * Run a callback and wrap any returned value in Ok<T> and any thrown error in Err<Catched>
+   * Run a callback and wrap any returned value in Ok<T> and any thrown error in Err<Error>
    * @param callback 
    * @returns 
    */
-  export async function runAndDoubleWrap<T>(callback: () => Awaitable<T>): Promise<Result<T, Error>> {
+  export async function runAndWrapAsError<T>(callback: () => Awaitable<T>): Promise<Result<T, Error>> {
     try {
       return new Ok(await callback())
     } catch (e: unknown) {
@@ -63,11 +63,11 @@ export namespace Result {
   }
 
   /**
-   * Run a callback and wrap any returned value in Ok<T> and any thrown error in Err<Catched>
+   * Run a callback and wrap any returned value in Ok<T> and any thrown error in Err<Error>
    * @param callback 
    * @returns 
    */
-  export function runAndDoubleWrapSync<T>(callback: () => T): Result<T, Error> {
+  export function runAndWrapAsErrorSync<T>(callback: () => T): Result<T, Error> {
     try {
       return new Ok(callback())
     } catch (e: unknown) {
@@ -102,11 +102,11 @@ export namespace Result {
   }
 
   /**
-   * Run a callback and wrap any thrown error in Err<unknown>
+   * Run a callback and wrap any thrown error in Err<Error>
    * @param callback 
    * @returns 
    */
-  export async function runOrDoubleWrap<R extends Result<any, any>>(callback: () => Awaitable<R>): Promise<R | Err<Error>> {
+  export async function runOrWrapAsError<R extends Result<any, any>>(callback: () => Awaitable<R>): Promise<R | Err<Error>> {
     try {
       return await callback()
     } catch (e: unknown) {
@@ -115,11 +115,11 @@ export namespace Result {
   }
 
   /**
-   * Run a callback and wrap any thrown error in Err<unknown>
+   * Run a callback and wrap any thrown error in Err<Error>
    * @param callback 
    * @returns 
    */
-  export function runOrDoubleWrapSync<R extends Result<any, any>>(callback: () => R): R | Err<Error> {
+  export function runOrWrapAsErrorSync<R extends Result<any, any>>(callback: () => R): R | Err<Error> {
     try {
       return callback()
     } catch (e: unknown) {
