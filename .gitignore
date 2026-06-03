@@ -7,3 +7,5 @@
 /out
 
 *.local
+
+/local
