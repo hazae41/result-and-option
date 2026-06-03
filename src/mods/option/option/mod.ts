@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
-import { None, NoneInit } from "../none/mod.ts";
-import { Some, SomeInit } from "../some/mod.ts";
+import { None } from "../none/mod.ts";
+import { Some } from "../some/mod.ts";
 
 export type Nullable<T> =
   T | undefined | null
@@ -15,27 +15,15 @@ export type Option<T> =
   | Some<T>
   | None
 
-export type OptionInit<T> =
-  | SomeInit<T>
-  | NoneInit
-
 export namespace Option {
-
-  export function from<T>(init: OptionInit<T>): Option<T> {
-    if ("inner" in init)
-      return new Some(init.inner)
-    return new None()
-  }
 
   /**
    * Create an Option from a nullable value
    * @param inner 
-   * @returns `Some<T>` if `T`, `None` if `undefined`
+   * @returns `Some<T>` if `T`, `None` if `null` or `undefined`
    */
   export function wrap<T>(inner: Nullable<T>): Option<T> {
-    if (inner == null)
-      return new None()
-    return new Some(inner)
+    return inner == null ? new None() : new Some(inner)
   }
 
 }

@@ -6,11 +6,7 @@ Rust-like Result and Option for TypeScript
 npm install @hazae41/result-and-option
 ```
 
-```bash
-deno install jsr:@hazae41/result-and-option
-```
-
-[**📦 NPM**](https://www.npmjs.com/package/@hazae41/result-and-option) • [**📦 JSR**](https://jsr.io/@hazae41/result-and-option)
+[**📦 NPM**](https://www.npmjs.com/package/@hazae41/result-and-option)
 
 ## Features
 

@@ -1,11 +1,9 @@
+// deno-lint-ignore-file no-misused-new no-unused-vars
+
 import type { Awaitable } from "@/libs/awaitable/mod.ts";
-import { Ok } from "@/mods/result/mod.ts";
+import { Ok } from "@/mods/result/ok/mod.ts";
 import { None } from "../none/mod.ts";
 import type { Option } from "../option/mod.ts";
-
-export interface SomeInit<T> {
-  readonly inner: T
-}
 
 export class Some<T> {
 
@@ -17,12 +15,8 @@ export class Some<T> {
     readonly inner: T
   ) { }
 
-  static create<T>(inner: T): Some<T> {
+  static new<T>(inner: T): Some<T> {
     return new Some<T>(inner)
-  }
-
-  static from<T>(init: SomeInit<T>): Some<T> {
-    return new Some<T>(init.inner)
   }
 
   /**
@@ -93,28 +87,28 @@ export class Some<T> {
 
   /**
    * Get the inner value or a default one
-   * @param _value 
+   * @param value 
    * @returns `this.inner` if `Some`, `value` if `None`
    */
-  getOr(_value: unknown): T {
+  getOr(value: unknown): T {
     return this.inner
   }
 
   /**
    * Returns the contained `Some` value or computes it from a closure
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `this.inner` if `Some`, `await noneCallback()` if `None`
    */
-  getOrElse(_noneCallback: unknown): T {
+  getOrElse(noneCallback: unknown): T {
     return this.inner
   }
 
   /**
    * Returns the contained `Some` value or computes it from a closure
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `this.inner` if `Some`, `noneCallback()` if `None`
    */
-  getOrElseSync(_noneCallback: unknown): T {
+  getOrElseSync(noneCallback: unknown): T {
     return this.inner
   }
 
@@ -128,28 +122,28 @@ export class Some<T> {
 
   /**
    * Transform `Option<T>` into `Result<T, E>`
-   * @param _error
+   * @param error
    * @returns `Ok(this.inner)` if `Some`, `Err(error)` if `None`
    */
-  okOr(_error: unknown): Ok<T> {
+  okOr(error: unknown): Ok<T> {
     return new Ok(this.inner)
   }
 
   /**
    * Transforms the `Option<T>` into a `Result<T, E>`, mapping `Some(v)` to `Ok(v)` and `None` to `Err(err())`
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `Ok(this.inner)` if `Some`, `Err(await noneCallback())` is `None`
    */
-  okOrElse(_noneCallback: unknown): Ok<T> {
+  okOrElse(noneCallback: unknown): Ok<T> {
     return new Ok(this.inner)
   }
 
   /**
    * Transforms the `Option<T>` into a `Result<T, E>`, mapping `Some(v)` to `Ok(v)` and `None` to `Err(err())`
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `Ok(this.inner)` if `Some`, `Err(noneCallback())` is `None`
    */
-  okOrElseSync(_noneCallback: unknown): Ok<T> {
+  okOrElseSync(noneCallback: unknown): Ok<T> {
     return new Ok(this.inner)
   }
 
@@ -234,41 +228,41 @@ export class Some<T> {
 
   /**
    * Returns the provided default result (if none), or applies a function to the contained value (if any)
-   * @param _value 
+   * @param value 
    * @param someMapper 
    * @returns `value` if `None`, `await someMapper(this.inner)` if `Some`
    */
-  async mapOr<U>(_value: U, someMapper: (inner: T) => Awaitable<U>): Promise<U> {
+  async mapOr<U>(value: U, someMapper: (inner: T) => Awaitable<U>): Promise<U> {
     return await someMapper(this.inner)
   }
 
   /**
    * Returns the provided default result (if none), or applies a function to the contained value (if any)
-   * @param _value 
+   * @param value 
    * @param someMapper 
    * @returns `value` if `None`, `someMapper(this.inner)` if `Some`
    */
-  mapOrSync<U>(_value: U, someMapper: (inner: T) => U): U {
+  mapOrSync<U>(value: U, someMapper: (inner: T) => U): U {
     return someMapper(this.inner)
   }
 
   /**
    * Computes a default function result (if none), or applies a different function to the contained value (if any)
-   * @param _noneCallback 
+   * @param noneCallback 
    * @param someMapper 
    * @returns `await someMapper(this.inner)` if `Some`, `await noneCallback()` if `None`
    */
-  async mapOrElse<U>(_noneCallback: unknown, someMapper: (inner: T) => Awaitable<U>): Promise<U> {
+  async mapOrElse<U>(noneCallback: unknown, someMapper: (inner: T) => Awaitable<U>): Promise<U> {
     return await someMapper(this.inner)
   }
 
   /**
    * Computes a default function result (if none), or applies a different function to the contained value (if any)
-   * @param _noneCallback 
+   * @param noneCallback 
    * @param someMapper 
    * @returns `someMapper(this.inner)` if `Some`, `noneCallback()` if `None`
    */
-  mapOrElseSync<U>(_noneCallback: unknown, someMapper: (inner: T) => U): U {
+  mapOrElseSync<U>(noneCallback: unknown, someMapper: (inner: T) => U): U {
     return someMapper(this.inner)
   }
 
@@ -301,28 +295,28 @@ export class Some<T> {
 
   /**
    * Returns `this` if `Some`, otherwise returns `value`
-   * @param _value 
+   * @param value 
    * @returns `this` if `Some`, `value` if `None`
    */
-  or(_value: unknown): this {
+  or(value: unknown): this {
     return this
   }
 
   /**
    * Returns `this` if `Some`, otherwise calls `noneCallback` and returns the result
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `this` if `Some`, `await noneCallback()` if `None`
    */
-  orElse(_noneCallback: unknown): this {
+  orElse(noneCallback: unknown): this {
     return this
   }
 
   /**
    * Returns `this` if `Some`, otherwise calls `noneCallback` and returns the result
-   * @param _noneCallback 
+   * @param noneCallback 
    * @returns `this` if `Some`, `noneCallback()` if `None`
    */
-  orElseSync(_noneCallback: unknown): this {
+  orElseSync(noneCallback: unknown): this {
     return this
   }
 

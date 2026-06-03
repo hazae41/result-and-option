@@ -1,12 +1,9 @@
+// deno-lint-ignore-file no-namespace require-yield no-misused-new
+
 import type { Awaitable } from "@/libs/awaitable/mod.ts"
 import { None, Some } from "@/mods/option/mod.ts"
 
 export namespace Err {
-
-  /**
-   * Force inference of Err and its generic type
-   */
-  export type Infer<S, E = unknown> = Err<E & Err.Inner<S>>
 
   /**
    * Get the inner type of an Err
@@ -17,14 +14,21 @@ export namespace Err {
 
 export class Err<T = unknown> {
 
-  #inner: T
-
   /**
    * A failure
    * @param inner 
    */
-  constructor(inner: T) {
-    this.#inner = inner
+  constructor(
+    readonly inner: T
+  ) { }
+
+  /**
+   * Create an `Err`
+   * @param inner 
+   * @returns `Err(inner)`
+   */
+  static new<T>(inner: T): Err<T> {
+    return new Err(inner)
   }
 
   /**
@@ -33,15 +37,6 @@ export class Err<T = unknown> {
    */
   static void(): Err<void> {
     return new Err<void>(undefined)
-  }
-
-  /**
-   * Create an `Err`
-   * @param inner 
-   * @returns `Err(inner)`
-   */
-  static create<T>(inner: T): Err<T> {
-    return new Err(inner)
   }
 
   /**
@@ -54,18 +49,13 @@ export class Err<T = unknown> {
     return new Err(new Error(message, options))
   }
 
-  get inner(): T {
-    return this.#inner
-  }
-
   [Symbol.dispose](this: Err<Disposable>) {
-    this.#inner[Symbol.dispose]()
+    this.inner[Symbol.dispose]()
   }
 
   async [Symbol.asyncDispose](this: Err<AsyncDisposable>) {
-    await this.#inner[Symbol.asyncDispose]()
+    await this.inner[Symbol.asyncDispose]()
   }
-
 
   /**
    * Type guard for `Ok`
@@ -165,7 +155,6 @@ export class Err<T = unknown> {
    * Returns an iterator over the possibly contained value
    * @yields `this.inner` if `Ok`
    */
-  // deno-lint-ignore require-yield
   *[Symbol.iterator](): Iterator<never, void> {
     return
   }
@@ -194,19 +183,6 @@ export class Err<T = unknown> {
    */
   containsErr(value: T): boolean {
     return this.inner === value
-  }
-
-  /**
-   * Get the inner value or throw to the closest `Result.unthrow`
-   * @param thrower The thrower from `Result.unthrow`
-   * @returns `this.inner` if `Ok`
-   * @throws `undefined` if `Err` 
-   * @see Result.unthrow
-   * @see Result.unthrowSync
-   */
-  throw(thrower: (e: Err<T>) => void): never {
-    thrower(this)
-    throw this
   }
 
   /**

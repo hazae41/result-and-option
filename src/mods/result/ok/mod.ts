@@ -1,12 +1,9 @@
+// deno-lint-ignore-file no-namespace no-misused-new
+
 import type { Awaitable } from "@/libs/awaitable/mod.ts";
 import { None, Some } from "@/mods/option/mod.ts";
 
 export namespace Ok {
-
-  /**
-   * Force inference of Ok and its generic type
-   */
-  export type Infer<S, T = unknown> = Ok<T & Ok.Inner<S>>
 
   /**
    * Get the inner type of an Ok
@@ -17,14 +14,21 @@ export namespace Ok {
 
 export class Ok<T = unknown> {
 
-  #inner: T
-
   /**
    * A success
    * @param inner 
    */
-  constructor(inner: T) {
-    this.#inner = inner
+  constructor(
+    readonly inner: T
+  ) { }
+
+  /**
+   * Create an `Ok`
+   * @param inner 
+   * @returns `Ok(inner)`
+   */
+  static new<T>(inner: T): Ok<T> {
+    return new Ok<T>(inner)
   }
 
   /**
@@ -35,25 +39,12 @@ export class Ok<T = unknown> {
     return new Ok<void>(undefined)
   }
 
-  /**
-   * Create an `Ok`
-   * @param inner 
-   * @returns `Ok(inner)`
-   */
-  static create<T>(inner: T): Ok<T> {
-    return new Ok<T>(inner)
-  }
-
-  get inner(): T {
-    return this.#inner
-  }
-
   [Symbol.dispose](this: Ok<Disposable>) {
-    this.#inner[Symbol.dispose]()
+    this.inner[Symbol.dispose]()
   }
 
   async [Symbol.asyncDispose](this: Ok<AsyncDisposable>) {
-    await this.#inner[Symbol.asyncDispose]()
+    await this.inner[Symbol.asyncDispose]()
   }
 
   /**
@@ -185,17 +176,6 @@ export class Ok<T = unknown> {
   }
 
   /**
-   * Just like `unwrap` but it throws to the closest `Result.unthrow`
-   * @returns `this.inner` if `Ok`
-   * @throws `this` if `Err` 
-   * @see Result.unthrow
-   * @see Result.unthrowSync
-   */
-  throw(_thrower: unknown): T {
-    return this.inner
-  }
-
-  /**
    * Get the inner value if Ok or throw the inner error
    * @returns `this.inner` if `Ok`
    * @throws `this.inner` if `Err` 
@@ -268,6 +248,7 @@ export class Ok<T = unknown> {
 
   /**
    * Get this if Err or throw the inner value
+   * @returns 
    */
   checkErrOrThrow(): never {
     throw this.inner

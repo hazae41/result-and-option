@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-misused-new no-unused-vars
+
 import type { Awaitable } from "@/libs/awaitable/mod.ts";
 import { Err } from "@/mods/result/mod.ts";
 import type { Option } from "../option/mod.ts";
@@ -10,11 +12,6 @@ export class NoneError extends Error {
 
 }
 
-// deno-lint-ignore no-empty-interface
-export interface NoneInit {
-  /* Nothing */
-}
-
 export class None {
 
   /**
@@ -24,11 +21,7 @@ export class None {
     readonly inner: undefined = undefined
   ) { }
 
-  static create(): None {
-    return new None()
-  }
-
-  static from(_init: NoneInit): None {
+  static new(): None {
     return new None()
   }
 
@@ -51,19 +44,19 @@ export class None {
 
   /**
    * Returns `true` if the option is a `Some` and the value inside of it matches a predicate
-   * @param _somePredicate 
+   * @param somePredicate 
    * @returns `true` if `Some` and `await somePredicate(this.inner)`, `None` otherwise
    */
-  isSomeAnd(_somePredicate: unknown): false {
+  isSomeAnd(somePredicate: unknown): false {
     return false
   }
 
   /**
    * Returns `true` if the option is a `Some` and the value inside of it matches a predicate
-   * @param _somePredicate 
+   * @param somePredicate 
    * @returns `true` if `Some` and `somePredicate(this.inner)`, `None` otherwise
    */
-  isSomeAndSync(_somePredicate: unknown): false {
+  isSomeAndSync(somePredicate: unknown): false {
     return false
   }
 
@@ -163,19 +156,19 @@ export class None {
 
   /**
    * Returns `None` if the option is `None`, otherwise calls `somePredicate` with the wrapped value
-   * @param _somePredicate 
+   * @param somePredicate 
    * @returns `Some` if `Some` and `await somePredicate(this.inner)`, `None` otherwise
    */
-  filter(_somePredicate: unknown): this {
+  filter(somePredicate: unknown): this {
     return this
   }
 
   /**
    * Returns `None` if the option is `None`, otherwise calls `somePredicate` with the wrapped value
-   * @param _somePredicate 
+   * @param somePredicate 
    * @returns `Some` if `Some` and `somePredicate(this.inner)`, `None` otherwise
    */
-  filterSync(_somePredicate: unknown): this {
+  filterSync(somePredicate: unknown): this {
     return this
   }
 
@@ -189,113 +182,113 @@ export class None {
 
   /**
    * Returns `true` if the option is a `Some` value containing the given value
-   * @param _value 
+   * @param value 
    * @returns `true` if `Some` and `this.inner === value`, `None` otherwise
    */
-  contains(_value: unknown): false {
+  contains(value: unknown): false {
     return false
   }
 
   /**
    * Calls the given callback with the inner value if `Ok`
-   * @param _someCallback 
+   * @param someCallback 
    * @returns `this`
    */
-  inspect(_someCallback: unknown): this {
+  inspect(someCallback: unknown): this {
     return this
   }
 
   /**
    * Calls the given callback with the inner value if `Ok`
-   * @param _someCallback 
+   * @param someCallback 
    * @returns `this`
    */
-  inspectSync(_someCallback: unknown): this {
+  inspectSync(someCallback: unknown): this {
     return this
   }
 
   /**
    * Maps an `Option<T>` to `Option<U>` by applying a function to a contained value (if `Some`) or returns `None` (if `None`)
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `Some(await someMapper(this.inner))` if `Some`, `this` if `None`
    */
-  map(_someMapper: unknown): this {
+  map(someMapper: unknown): this {
     return this
   }
 
   /**
    * Maps an `Option<T>` to `Option<U>` by applying a function to a contained value (if `Some`) or returns `None` (if `None`)
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `Some(someMapper(this.inner))` if `Some`, `this` if `None`
    */
-  mapSync(_someMapper: unknown): this {
+  mapSync(someMapper: unknown): this {
     return this
   }
 
   /**
    * Returns the provided default result (if none), or applies a function to the contained value (if any)
    * @param value 
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `value` if `None`, `await someMapper(this.inner)` if `Some`
    */
-  mapOr<U>(value: U, _someMapper: unknown): U {
+  mapOr<U>(value: U, someMapper: unknown): U {
     return value
   }
 
   /**
    * Returns the provided default result (if none), or applies a function to the contained value (if any)
    * @param value 
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `value` if `None`, `someMapper(this.inner)` if `Some`
    */
-  mapOrSync<U>(value: U, _someMapper: unknown): U {
+  mapOrSync<U>(value: U, someMapper: unknown): U {
     return value
   }
 
   /**
    * Computes a default function result (if none), or applies a different function to the contained value (if any)
    * @param noneCallback 
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `await someMapper(this.inner)` if `Some`, `await noneCallback()` if `None`
    */
-  async mapOrElse<U>(noneCallback: () => Awaitable<U>, _someMapper: unknown): Promise<U> {
+  async mapOrElse<U>(noneCallback: () => Awaitable<U>, someMapper: unknown): Promise<U> {
     return await noneCallback()
   }
 
   /**
    * Computes a default function result (if none), or applies a different function to the contained value (if any)
    * @param noneCallback 
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `someMapper(this.inner)` if `Some`, `noneCallback()` if `None`
    */
-  mapOrElseSync<U>(noneCallback: () => U, _someMapper: unknown): U {
+  mapOrElseSync<U>(noneCallback: () => U, someMapper: unknown): U {
     return noneCallback()
   }
 
   /**
    * Returns `None` if the option is `None`, otherwise returns `value`
-   * @param _value 
+   * @param value 
    * @returns `None` if `None`, `value` if `Some`
    */
-  and(_value: unknown): this {
+  and(value: unknown): this {
     return this
   }
 
   /**
    * Returns `None` if the option is `None`, otherwise calls `someMapper` with the wrapped value and returns the result
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `None` if `None`, `await someMapper(this.inner)` if `Some`
    */
-  andThen(_someMapper: unknown): this {
+  andThen(someMapper: unknown): this {
     return this
   }
 
   /**
    * Returns `None` if the option is `None`, otherwise calls `someMapper` with the wrapped value and returns the result
-   * @param _someMapper 
+   * @param someMapper 
    * @returns `None` if `None`, `someMapper(this.inner)` if `Some`
    */
-  andThenSync(_someMapper: unknown): this {
+  andThenSync(someMapper: unknown): this {
     return this
   }
 
@@ -337,10 +330,10 @@ export class None {
 
   /**
    * Zips `this` with another `Option`
-   * @param _other 
+   * @param other 
    * @returns `Some([this.inner, other.inner])` if both are `Some`, `None` if one of them is `None`
    */
-  zip(_other: unknown): None {
+  zip(other: unknown): None {
     return this
   }
 
