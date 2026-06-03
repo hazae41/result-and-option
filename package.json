@@ -19,7 +19,10 @@
     }
   },
   "devDependencies": {
+    "@hazae41/phobos": "^2.0.16",
     "@hazae41/tscousin": "^1.0.28",
+    "@types/node": "^25.9.1",
+    "deno": "^2.8.1",
     "typescript": "^5.9.3"
   }
 }
